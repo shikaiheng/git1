@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script type="text/javascript" src="js/jquery-1.12.2.min.js"></script>
+</head>
+<body>
+
+<form onsubmit="return false;">
+
+    分类
+    <select name="typeId">
+        <!--<option value="1">java</option>-->
+        <!--<option value="2">python</option>-->
+    </select><br />
+    标题<input type="text" name="title" /><br />
+    内容<textarea name="content"></textarea><br />
+    <input type="submit" value="保存" />
+</form>
+
+
+<script type="text/javascript">
+    $(function(){
+        $.ajax({
+            type:"get",
+            url:"type/list.do",
+            dataType:"json",
+            success:function(data){
+                if(data.code == 1){
+                    var infos = data.info;
+                    $(infos).each(function(){
+                        var html = '<option value="' + this.tid + '">' + this.typeName + '</option>';
+                        $("select").append($(html));
+                    })
+                }
+            }
+        })
+    })
+
+
+    $("form").submit(function(){
+        $.ajax({
+            type:"post",
+            url:"info/add.do",
+            data:$("form").serialize(),
+            dataType:"json",
+            success:function(data){
+                if(data.code == 1){
+                    window.location.href = "list.html";
+                }
+            }
+        })
+    })
+
+</script>
+
+
+
+</body>
+</html>
